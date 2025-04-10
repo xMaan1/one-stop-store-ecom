@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="text-success"><i class="fas fa-check-circle fa-2x mb-3"></i></h1>
+                    <h2 class="text-white">Thank You!</h2>
+                    <p class="text-white">Your order has been placed successfully</p>
+                    <hr>
+                    <h4 class="text-white">Order Details</h4>
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Order Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Order Number:</strong> #{{ order.id }}</p>
+                                    <p><strong>Order Date:</strong> {{ order.order_dt|date:"F d, Y" }}</p>
+                                    <p><strong>Order Status:</strong> 
+                                        <span class="badge {% if order.order_status == 'delivered' %}bg-success{% elif order.order_status == 'shipped' %}bg-info{% else %}bg-warning{% endif %}">
+                                            {{ order.order_status|title }}
+                                        </span>
+                                    </p>
+                                    <p><strong>Payment Status:</strong> 
+                                        <span class="badge {% if order.paid_status %}bg-success{% else %}bg-danger{% endif %}">
+                                            {% if order.paid_status %}Paid{% else %}Pending{% endif %}
+                                        </span>
+                                    </p>
+                                    <p><strong>Total Amount:</strong> Rs. {{ order.total_amt }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Customer Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Name:</strong> {{ order.user.first_name }} {{ order.user.last_name }}</p>
+                                    <p><strong>Email:</strong> {{ order.user.email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5 class="text-white">Order Items</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Image</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in orderitems %}
+                                    <tr>
+                                        <td>{{ item.item }}</td>
+                                        <td><img src="/media/{{ item.image }}" width="50"></td>
+                                        <td>{{ item.qty }}</td>
+                                        <td>Rs. {{ item.price }}</td>
+                                        <td>Rs. {{ item.total }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" class="text-end">Total:</th>
+                                        <th>Rs. {{ order.total_amt }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{% url 'my-orders' %}" class="btn btn-gold">View All Orders</a>
+                        <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 

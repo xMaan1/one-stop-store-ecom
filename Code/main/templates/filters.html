@@ -1,0 +1,239 @@
+{% load static %}
+<script type="text/javascript" src="{% static 'product-filter.js' %}"></script>
+<div class="premium-filters">
+	<h3 class="filter-title text-white">Refined Filters</h3>
+	
+	<!-- Price Filter -->
+	<div class="filter-section mb-4">
+		<h6 class="filter-header"><i class="fas fa-sliders-h mr-2"></i>Price Range</h6>
+		<div class="filter-content">
+			<div class="price-slider-container">
+				<input type="range" value="{{minMaxPrice.price__min}}" max={{minMaxPrice.price__max}} min={{minMaxPrice.price__min}} id="rangeInput" oninput="maxPrice.value=this.value" class="form-range custom-range" />
+				<div class="price-display d-flex justify-content-between mt-2">
+					<span>Rs. {{minMaxPrice.price__min}}</span>
+					<span>Rs. {{minMaxPrice.price__max}}</span>
+				</div>
+			</div>
+			<div class="mt-3">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Rs.</span>
+					</div>
+					<input type="number" value="{{minMaxPrice.price__min}}" max={{minMaxPrice.price__max}} min={{minMaxPrice.price__min}} class="form-control" id="maxPrice" onkeyup="rangeInput.value=this.value" placeholder="Max Price" />
+				</div>
+				<button id="priceFilterBtn" class="btn btn-gold btn-sm mt-2 w-100"><i class="fas fa-filter mr-1"></i> Apply Filter</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Colors Filter -->
+	<div class="filter-section mb-4">
+		<h6 class="filter-header"><i class="fas fa-palette mr-2"></i>Colors</h6>
+		<div class="filter-content">
+			<div class="color-boxes d-flex flex-wrap mb-2">
+				{% for color in colors %}
+				<div class="custom-control custom-checkbox color-item">
+					<input class="custom-control-input filter-checkbox" data-filter="color" value="{{color.color__id}}" type="checkbox" id="color-{{color.color__id}}" />
+					<label class="custom-control-label d-flex align-items-center" for="color-{{color.color__id}}">
+						<span class="color-box d-inline-block" style="width: 18px; height: 18px; background-color: {{color.color__color_code}}; border-radius: 4px; margin-right: 8px; border: 1px solid rgba(0,0,0,0.1);"></span>
+						<span class="color-name">{{color.color__title}}</span>
+					</label>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	
+	<!-- Categories Filter -->
+	<div class="filter-section mb-4">
+		<h6 class="filter-header"><i class="fas fa-tags mr-2"></i>Categories</h6>
+		<div class="filter-content">
+			{% for cat in cats %}
+			<div class="custom-control custom-checkbox category-item">
+				<input class="custom-control-input filter-checkbox" data-filter="category" value="{{cat.category__id}}" type="checkbox" id="cat-{{cat.category__id}}" />
+				<label class="custom-control-label" for="cat-{{cat.category__id}}">
+					{{cat.category__title}}
+				</label>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	
+	<!-- Brands Filter -->
+	<div class="filter-section mb-4">
+		<h6 class="filter-header"><i class="fas fa-crown mr-2"></i>Brands</h6>
+		<div class="filter-content">
+			{% for brand in brands %}
+			<div class="custom-control custom-checkbox brand-item">
+				<input class="custom-control-input filter-checkbox" data-filter="brand" value="{{brand.brand__id}}" type="checkbox" id="brand-{{brand.brand__id}}" />
+				<label class="custom-control-label" for="brand-{{brand.brand__id}}">
+					{{brand.brand__title}}
+				</label>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	
+	<!-- Sizes Filter -->
+	<div class="filter-section mb-4">
+		<h6 class="filter-header"><i class="fas fa-ruler mr-2"></i>Sizes</h6>
+		<div class="filter-content">
+			<div class="size-boxes d-flex flex-wrap">
+				{% for size in sizes %}
+				<div class="custom-control custom-checkbox size-item">
+					<input class="custom-control-input filter-checkbox" data-filter="size" value="{{size.size__id}}" type="checkbox" id="size-{{size.size__id}}" />
+					<label class="custom-control-label" for="size-{{size.size__id}}">
+						{{size.size__title}}
+					</label>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	
+	<!-- Reset Filters -->
+	<button id="resetFilters" class="btn btn-outline-secondary btn-sm w-100 mb-4">
+		<i class="fas fa-redo-alt mr-1"></i> Reset All Filters
+	</button>
+</div>
+
+<style>
+	.premium-filters {
+		background: linear-gradient(135deg, #1a1a2e, #16213e);
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+	}
+	
+	.filter-title {
+		font-size: 1.4rem;
+		font-weight: 600;
+		margin-bottom: 25px;
+		padding-bottom: 10px;
+		border-bottom: 2px solid #d4af37;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+	
+	.filter-section {
+		background: rgba(255,255,255,0.05);
+		border-radius: 8px;
+		overflow: hidden;
+		transition: all 0.3s ease;
+	}
+	
+	.filter-section:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+	}
+	
+	.filter-header {
+		background: linear-gradient(to right, #d4af37, #e0c872);
+		color: #000;
+		padding: 12px 15px;
+		font-weight: 600;
+		margin: 0;
+		border-radius: 8px 8px 0 0;
+		display: flex;
+		align-items: center;
+	}
+	
+	.filter-content {
+		padding: 15px;
+	}
+	
+	/* Custom range slider */
+	.custom-range {
+		-webkit-appearance: none;
+		width: 100%;
+		height: 10px;
+		border-radius: 5px;
+		background: linear-gradient(to right, #d4af37, #f2d35d);
+		outline: none;
+	}
+	
+	.custom-range::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #fff;
+		border: 2px solid #d4af37;
+		cursor: pointer;
+		box-shadow: 0 0 5px rgba(0,0,0,0.2);
+	}
+	
+	.custom-range::-moz-range-thumb {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #fff;
+		border: 2px solid #d4af37;
+		cursor: pointer;
+		box-shadow: 0 0 5px rgba(0,0,0,0.2);
+	}
+	
+	.price-display {
+		color: #fff;
+		font-size: 0.8rem;
+	}
+	
+	/* Custom checkboxes */
+	.custom-control {
+		margin-bottom: 10px;
+	}
+	
+	.custom-control-label {
+		color: #fff;
+		font-size: 0.9rem;
+		cursor: pointer;
+	}
+	
+	.custom-control-input:checked ~ .custom-control-label::before {
+		background-color: #d4af37;
+		border-color: #d4af37;
+	}
+	
+	/* Style fixes */
+	.form-control {
+		background-color: rgba(255,255,255,0.9);
+	}
+	
+	.btn-gold {
+		background: linear-gradient(to right, #d4af37, #f2d35d);
+		border: none;
+		color: #000;
+		font-weight: 600;
+		transition: all 0.3s ease;
+	}
+	
+	.btn-gold:hover {
+		background: linear-gradient(to right, #c19e2f, #e0c872);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	}
+	
+	.btn-outline-secondary {
+		border: 1px solid rgba(255,255,255,0.3);
+		color: #fff;
+		transition: all 0.3s ease;
+	}
+	
+	.btn-outline-secondary:hover {
+		background-color: rgba(255,255,255,0.1);
+		color: #d4af37;
+		border-color: #d4af37;
+	}
+	
+	/* Color boxes styling */
+	.color-item, .size-item {
+		flex-basis: 50%;
+		margin-bottom: 8px;
+	}
+	
+	/* Add an active class for when filters are applied */
+	.filter-active {
+		border-left: 3px solid #d4af37;
+	}
+</style>

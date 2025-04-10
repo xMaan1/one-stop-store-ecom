@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-4">
+	<div class="row">
+		<!-- Filters -->
+		<div class="col-md-3">
+			{% include 'filters.html' %}
+		</div>
+		<div class="col-md-9">
+			<!-- Products -->
+			<div class="products-header">
+				<h3 class="text-white mb-0">Premium Collection</h3>
+				<div class="product-count">
+					<span class="badge badge-gold">{{ total_data }} Products</span>
+				</div>
+			</div>
+			
+			<div class="product-display-options mb-3">
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="view-options">
+						<button class="btn btn-sm btn-outline-secondary active" data-view="grid">
+							<i class="fas fa-th"></i>
+						</button>
+						<button class="btn btn-sm btn-outline-secondary" data-view="list">
+							<i class="fas fa-list"></i>
+						</button>
+					</div>
+					<div class="sort-options">
+						<select class="form-control form-control-sm" id="sortProducts">
+							<option value="default">Default Sorting</option>
+							<option value="price-low-high">Price: Low to High</option>
+							<option value="price-high-low">Price: High to Low</option>
+							<option value="name-a-z">Name: A to Z</option>
+							<option value="name-z-a">Name: Z to A</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row" id="filteredProducts">
+				<p class="ajaxLoader text-white">Loading...</p>
+				{% for product in all_data %}
+				<div class="col-lg-4 col-md-6 mb-4 product-box">
+					<div class="card product-card shadow">
+						<div class="product-image-container">
+							<a href="/product/{{product.slug}}/{{product.id}}">
+								<img src="/media/{{product.productattribute_set.first.image}}" class="card-img-top" alt="{{product.title}}">
+							</a>
+							<div class="product-actions">
+								<button class="btn btn-sm btn-gold add-to-cart" data-index="{{product.id}}">
+									<i class="fa fa-shopping-cart"></i> Add
+								</button>
+							</div>
+						</div>
+						<div class="card-body">
+							<h5 class="card-text product-title">
+								<a href="/product/{{product.slug}}/{{product.id}}">{{product.title}}</a>
+							</h5>
+							<div class="d-flex justify-content-between align-items-center">
+								<h6 class="text-white product-price">Rs. <span class="product-price-{{product.id}}">{{product.productattribute_set.first.price}}</span></h6>
+								<div class="rating-stars">
+									<i class="fa fa-star text-warning"></i>
+									<i class="fa fa-star text-warning"></i>
+									<i class="fa fa-star text-warning"></i>
+									<i class="fa fa-star text-warning"></i>
+									<i class="fa fa-star-half-alt text-warning"></i>
+								</div>
+							</div>
+						</div>
+						<div class="product-meta">
+							<input type="hidden" value="1" class="form-control product-qty-{{product.id}}" id="productQty" />
+							<input type="hidden" class="product-image-{{product.id}}" value="{{product.productattribute_set.first.image}}" />
+							<input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}" />
+							<input type="hidden" class="product-title-{{product.id}}" value="{{product.title}}" />
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			
+			<!-- No products found message -->
+			<div id="noProductsFound" class="text-center py-5 d-none">
+				<i class="fas fa-search fa-3x text-muted mb-3"></i>
+				<h4 class="text-white">No products match your filters</h4>
+				<p class="text-white">Try adjusting your search criteria</p>
+				<button id="clearAllFilters" class="btn btn-gold mt-2">
+					<i class="fas fa-redo-alt mr-1"></i> Clear All Filters
+				</button>
+			</div>
+		</div>
+	</div>
+</main>
+
+<style>
+	/* Enhanced product styling */
+	.products-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		padding-bottom: 15px;
+		border-bottom: 2px solid #d4af37;
+	}
+	
+	.badge-gold {
+		background: linear-gradient(to right, #d4af37, #f2d35d);
+		color: #000;
+		font-weight: 600;
+		padding: 6px 12px;
+		border-radius: 20px;
+	}
+	
+	.product-display-options {
+		background: rgba(255,255,255,0.05);
+		padding: 10px 15px;
+		border-radius: 8px;
+		margin-bottom: 20px;
+	}
+	
+	.view-options .btn {
+		width: 36px;
+		height: 36px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 5px;
+		color: #fff;
+	}
+	
+	.view-options .btn.active {
+		background-color: #d4af37;
+		color: #000;
+		border-color: #d4af37;
+	}
+	
+	.product-card {
+		transition: all 0.3s ease;
+		border: none;
+		overflow: hidden;
+		margin-bottom: 20px;
+		border-radius: 10px;
+		position: relative;
+		height: 100%;
+	}
+	
+	.product-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+	}
+	
+	.product-image-container {
+		position: relative;
+		overflow: hidden;
+	}
+	
+	.product-image-container img {
+		height: 220px;
+		object-fit: cover;
+		transition: all 0.5s ease;
+	}
+	
+	.product-card:hover .product-image-container img {
+		transform: scale(1.05);
+	}
+	
+	.product-actions {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: rgba(0,0,0,0.7);
+		padding: 10px;
+		opacity: 0;
+		transition: all 0.3s ease;
+		transform: translateY(100%);
+		display: flex;
+		justify-content: center;
+	}
+	
+	.product-card:hover .product-actions {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	
+	.product-title {
+		font-size: 1rem;
+		font-weight: 600;
+		margin-bottom: 10px;
+		line-height: 1.4;
+		height: 2.8em;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+	
+	.product-title a {
+		color: #333;
+		transition: all 0.2s ease;
+	}
+	
+	.product-title a:hover {
+		color: #d4af37;
+		text-decoration: none;
+	}
+	
+	.product-price {
+		font-weight: 700;
+		color: #d4af37 !important;
+		margin-bottom: 0;
+	}
+	
+	.rating-stars {
+		font-size: 0.75rem;
+	}
+	
+	/* Button styles */
+	.btn-gold {
+		background: linear-gradient(to right, #d4af37, #f2d35d);
+		color: #000;
+		font-weight: 600;
+		border: none;
+		padding: 8px 16px;
+		border-radius: 30px;
+		box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+		transition: all 0.3s ease;
+	}
+	
+	.btn-gold:hover {
+		transform: translateY(-2px);
+		background: linear-gradient(to right, #c19e2f, #e0c872);
+		box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+		color: #000;
+	}
+	
+	/* List view styles */
+	.list-view .product-box {
+		width: 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	
+	.list-view .product-card {
+		display: flex;
+		flex-direction: row;
+	}
+	
+	.list-view .product-image-container {
+		width: 200px;
+		flex-shrink: 0;
+	}
+	
+	.list-view .card-body {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	
+	/* Responsive adjustments */
+	@media (max-width: 767px) {
+		.list-view .product-card {
+			flex-direction: column;
+		}
+		
+		.list-view .product-image-container {
+			width: 100%;
+		}
+	}
+</style>
+
+<script>
+	$(document).ready(function() {
+		// View switcher (grid/list)
+		$('.view-options .btn').click(function() {
+			$('.view-options .btn').removeClass('active');
+			$(this).addClass('active');
+			
+			const viewMode = $(this).data('view');
+			if (viewMode === 'list') {
+				$('#filteredProducts').addClass('list-view');
+			} else {
+				$('#filteredProducts').removeClass('list-view');
+			}
+		});
+		
+		// Sort functionality
+		$('#sortProducts').change(function() {
+			const sortValue = $(this).val();
+			const products = $('.product-box').get();
+			
+			products.sort(function(a, b) {
+				if (sortValue === 'price-low-high') {
+					const priceA = parseInt($(a).find('.product-price span').text());
+					const priceB = parseInt($(b).find('.product-price span').text());
+					return priceA - priceB;
+				} else if (sortValue === 'price-high-low') {
+					const priceA = parseInt($(a).find('.product-price span').text());
+					const priceB = parseInt($(b).find('.product-price span').text());
+					return priceB - priceA;
+				} else if (sortValue === 'name-a-z') {
+					const nameA = $(a).find('.product-title a').text().toLowerCase();
+					const nameB = $(b).find('.product-title a').text().toLowerCase();
+					return nameA.localeCompare(nameB);
+				} else if (sortValue === 'name-z-a') {
+					const nameA = $(a).find('.product-title a').text().toLowerCase();
+					const nameB = $(b).find('.product-title a').text().toLowerCase();
+					return nameB.localeCompare(nameA);
+				}
+				return 0;
+			});
+			
+			$('#filteredProducts').html(products);
+		});
+		
+		// Clear all filters button
+		$('#clearAllFilters').click(function() {
+			// Reset all filter checkboxes
+			$('.filter-checkbox').prop('checked', false);
+			// Reset price range
+			$('#maxPrice').val($('#rangeInput').attr('min'));
+			$('#rangeInput').val($('#rangeInput').attr('min'));
+			// Trigger filter update
+			$('#priceFilterBtn').click();
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-4">
+	<!-- Featured Products -->
+	<h3 class="my-4 border-bottom pb-1 text-white">Order Details</h3>
+	<div class="row">
+		<div class="col-md-3">
+			{% include 'user/user-sidebar.html' %}
+		</div>
+		<div class="col-md-9">
+			<div class="mb-4">
+				<a href="{% url 'my-orders' %}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Back to Orders</a>
+			</div>
+			
+			<div class="card mb-4">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Invoice #{{ orderitems.first.invoice_no }}</h5>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table-bordered table text-white">
+							<thead>
+								<tr>
+									<th>Product</th>
+									<th>Image</th>
+									<th>Qty</th>
+									<th>Price</th>
+									<th>Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in orderitems %}
+								<tr>
+									<td>{{item.item}}</td>
+									<td>
+										<img src="/media/{{item.image}}" width="60" class="img-thumbnail" />
+									</td>
+									<td>{{item.qty}}</td>
+									<td>Rs. {{item.price}}</td>
+									<td>Rs. {{item.total}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" class="text-end">Total:</th>
+									<th>Rs. {{ orderitems.first.order.total_amt }}</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock %}
