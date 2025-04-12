@@ -1,0 +1,76 @@
+name: Deploy to StackCP via FTP
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch (could be master, main, or your custom branch)
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: mbstring, intl, gd, xml, zip
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install Dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --no-progress
+
+      - name: Create .env file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          # Configure the .env file
+          sed -i "s/APP_ENV=.*/APP_ENV=production/" .env
+          sed -i "s/APP_DEBUG=.*/APP_DEBUG=false/" .env
+          sed -i "s#APP_URL=.*#APP_URL=https://onestop-store.stackstaging.com#" .env
+          sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" .env
+          sed -i "s/DB_DATABASE=.*/DB_DATABASE=username_onestop/" .env
+          sed -i "s/DB_USERNAME=.*/DB_USERNAME=username_onestop/" .env
+          sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=0|8|5.>w(A9e/" .env
+
+      - name: Generate optimized files
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: Deploy to StackCP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: onestop.store  # Replace with your StackCP FTP server
+          username: username     # Replace with your StackCP FTP username
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /         # The server directory for your project
+          local-dir: ./         # The local directory to upload
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.github/**
+            .env.example
+            .env.testing
+            phpunit.xml
+            README.md
+            CONTRIBUTING.md
+            tests/**
+            storage/logs/**
+            storage/framework/cache/**
+            storage/framework/sessions/** 

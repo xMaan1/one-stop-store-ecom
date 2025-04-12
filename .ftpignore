@@ -1,0 +1,62 @@
+# Git files and directories
+.git*
+.git*/**
+
+# Development tools and configurations
+.editorconfig
+.idea/**
+.vscode/**
+nbproject/**
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/**
+/package-lock.json
+/yarn.lock
+
+# Laravel specific
+.env
+.env.backup
+.env.example
+.env.testing
+phpunit.xml
+phpunit.xml.dist
+/phpcs.xml
+/phpstan.neon
+/phpstan-baseline.neon
+Homestead.json
+Homestead.yaml
+.phpunit.result.cache
+docker-compose.yml
+docker-compose.yaml
+/docker
+
+# Laravel storage directories that shouldn't be overwritten
+storage/app/public/**
+storage/logs/**
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+
+# Development/testing
+/tests/**
+/docs/**
+/coverage/**
+
+# CI/CD files and directories
+/.github/**
+/.circleci/**
+/.travis.yml
+/.gitlab-ci.yml
+
+# Build artifacts
+/public/hot
+/public/storage
+
+# Custom files for StackCP deployment
+/fix_helpers.php
+/fix_ecommerce_helper.php
+/ensure_provider_loaded.php
+/FIX_INSTRUCTIONS.md
+/index.php.fix 
