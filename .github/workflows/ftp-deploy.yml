@@ -44,7 +44,7 @@ jobs:
           sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" .env
           sed -i "s/DB_DATABASE=.*/DB_DATABASE=username_onestop/" .env
           sed -i "s/DB_USERNAME=.*/DB_USERNAME=username_onestop/" .env
-          sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=0|8|5.>w(A9e/" .env
+          sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.FTP_PASSWORD }}/" .env
 
       - name: Generate optimized files
         run: |
@@ -55,10 +55,10 @@ jobs:
       - name: Deploy to StackCP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: onestop.store  # Replace with your StackCP FTP server
-          username: username     # Replace with your StackCP FTP username
+          server: ftp.onestop.store  # Updated FTP server
+          username: onestop.store@onestop.store # Updated FTP username
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /         # The server directory for your project
+          server-dir: /public_html/laravel-ecommerce-system/ # Updated target directory
           local-dir: ./         # The local directory to upload
           exclude: |
             **/.git*
@@ -73,4 +73,5 @@ jobs:
             tests/**
             storage/logs/**
             storage/framework/cache/**
-            storage/framework/sessions/** 
+            storage/framework/sessions/**
+            .ftpignore # Exclude the ftpignore file itself 
