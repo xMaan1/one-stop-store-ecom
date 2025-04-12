@@ -1,0 +1,116 @@
+# StackCP Deployment Instructions
+
+Follow these steps to deploy your Laravel e-commerce application to StackCP:
+
+## 1. FTP Upload
+
+Use an FTP client like FileZilla to upload your files:
+
+```
+Host: The hostname provided by StackCP
+Username: The username provided by StackCP
+Password: The password provided by StackCP
+Port: 21 (or as specified by StackCP)
+```
+
+## 2. Directory Structure
+
+Set up the following directory structure on your StackCP hosting:
+
+- In the root directory (public_html or www):
+  - Upload all files from your local `public/` directory
+
+- Create a separate directory (e.g., `laravel`) outside the public directory:
+  - Upload all other Laravel application files here (app, bootstrap, config, etc.)
+
+## 3. Database Setup
+
+- Log into your StackCP control panel
+- Create a new MySQL database
+- Import the `database.sql` file into your new database
+
+## 4. Configure Environment
+
+- Modify the `.env` file with your database credentials:
+```
+APP_NAME="Botble CMS"
+APP_DEBUG=false
+APP_ENV=production
+APP_URL=https://your-domain.com
+APP_KEY=base64:gvnyrpg1kBqWFyGSsCtB/+rhC4hLBs/E5wjjE8IFMxY=
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1 (or as provided by StackCP)
+DB_PORT=3306 (or as provided by StackCP)
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_username
+DB_PASSWORD=your_database_password
+
+ADMIN_DIR=admin
+```
+
+## 5. Create an index.php file
+
+In your public directory, create an `index.php` file with the following content:
+
+```php
+<?php
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ */
+
+define('LARAVEL_START', microtime(true));
+
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__.'/../laravel/vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Turn On The Lights
+|--------------------------------------------------------------------------
+*/
+
+$app = require_once __DIR__.'/../laravel/bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+*/
+
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+
+$response->send();
+
+$kernel->terminate($request, $response);
+```
+
+## 6. Set Proper Permissions
+
+Set these permissions on your server:
+- `storage/` directory: 755
+- `bootstrap/cache/` directory: 755
+
+## 7. Access Your Site
+
+- Main website: `https://your-domain.com`
+- Admin dashboard: `https://your-domain.com/admin`
+
+Default admin credentials:
+- Username: `botble`
+- Password: `159357`
+
+## 8. Important Post-Installation Steps
+
+1. Change the default admin password
+2. Configure your site settings in the admin panel
+3. If storage links aren't working, you may need to manually create a symlink on the server 
