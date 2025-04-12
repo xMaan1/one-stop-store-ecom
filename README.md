@@ -94,4 +94,6 @@ For detailed documentation on the product category tree structure, see [Product 
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
+
+// Triggering GitHub Actions workflow re-run 
