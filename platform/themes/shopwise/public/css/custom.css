@@ -1,0 +1,364 @@
+/**
+ * AlWaqar - Premium Menswear
+ */
+
+/* Main colors */
+:root {
+    --primary-color: #D4AF37;
+    --secondary-color: #000000;
+    --white-color: #ffffff;
+    --light-gold: #F0E68C;
+    --dark-gold: #B8860B;
+}
+
+/* Premium elements */
+body {
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.navbar-brand img {
+    max-height: 60px;
+}
+
+/* Primary styles - essential for the brand */
+.btn-pink, .btn-fill-out:hover, .price, .product_color_switch span.active,
+.cart_count, .badge, .scroll-top,
+.slick-dots li.slick-active button, .ui-slider .ui-slider-range,
+.pagination .page-item.active .page-link {
+    background-color: #D4AF37 !important;
+    color: #000000 !important;
+    transition: all 0.3s ease;
+}
+
+.btn-fill-out:hover, .cart_count, .badge {
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+a:hover, .text-default, .nav-link.active, .product-title a:hover, 
+.heading_tab_header .nav-link:hover, .footer_dark a:hover {
+    color: #D4AF37 !important;
+}
+
+.navbar .navbar-nav > .active > a.nav-link, .pagination .page-item.active .page-link {
+    border-color: #D4AF37 !important;
+}
+
+/* Background colors */
+.page-header, .bg_dark, .header_wrap.fixed-top, .footer_dark,
+.top-header, .bottom_header {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Enhanced header */
+.middle-header {
+    padding: 20px 0;
+}
+
+.nav_block {
+    display: flex;
+    align-items: center;
+}
+
+.bottom_header {
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 12px 15px !important;
+}
+
+/* Buttons */
+.btn-fill-out {
+    border: 2px solid #D4AF37;
+    background-color: transparent;
+    color: #000000;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    transition: all 0.4s ease;
+}
+
+.btn-fill-out:hover {
+    background-color: #D4AF37;
+    color: #000000 !important;
+    transform: translateY(-2px);
+}
+
+/* Product styles */
+.product {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.product:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.product_img img {
+    transition: all 0.6s ease;
+}
+
+.product_img:hover img {
+    transform: scale(1.05);
+}
+
+.product_info {
+    padding: 15px 15px 25px;
+}
+
+.product-title {
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Carousel enhancements */
+.carousel-control-next, .carousel-control-prev {
+    width: 40px;
+    height: 40px;
+    background-color: #D4AF37;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.carousel:hover .carousel-control-next,
+.carousel:hover .carousel-control-prev {
+    opacity: 0.9;
+}
+
+/* Remove unwanted elements */
+.wishlist_count, .compare-button, .currency-switcher, 
+#navCatContent, .categories_btn,
+.wishlist_remove {
+    display: none !important;
+}
+
+/* Footer refinements */
+.footer_dark {
+    background-color: #000000;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.footer_dark h1, .footer_dark h2, .footer_dark h3, .footer_dark h4, 
+.footer_dark h5, .footer_dark h6, .footer_dark p {
+    color: #ffffff;
+}
+
+.widget_title {
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.widget_title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background-color: #D4AF37;
+}
+
+.footer_logo {
+    margin-bottom: 30px;
+}
+
+.footer_social li a {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.footer_social li a:hover {
+    background-color: #D4AF37;
+    color: #000000 !important;
+    transform: translateY(-3px);
+}
+
+/* Newsletter form */
+.form-control {
+    height: 48px;
+    border: none;
+    border-radius: 0;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-send {
+    background-color: #D4AF37;
+    color: #000000;
+    border: none;
+    height: 48px;
+    width: 48px;
+}
+
+/* Search refinements */
+.search_btn {
+    background-color: #D4AF37;
+    color: #000000;
+    border: none;
+    height: 48px;
+    width: 48px;
+}
+
+.search_btn:hover {
+    background-color: #B8860B;
+}
+
+/* Cart button */
+.cart_trigger {
+    position: relative;
+}
+
+.cart_count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #D4AF37;
+    color: #000;
+    font-size: 11px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+/* Remove pink background */
+.bg-pink, .pink_bg {
+    background-color: #D4AF37 !important;
+}
+
+/* Admin panel */
+.page-header.navbar .hor-menu .navbar-nav > li.active > a, 
+.page-header.navbar .hor-menu .navbar-nav > li > a:hover,
+.btn-primary, .btn-info, .btn-success, .btn-danger {
+    background-color: #D4AF37 !important;
+    color: #000000 !important;
+}
+
+/* Change all pink elements to gold */
+.carousel-indicators li.active, .slick-dots li button:hover, 
+.list_item li::before, .blog_meta li a:hover, .blog_meta li a:hover i,
+.item_remove:hover, .menu_light .navbar-nav .nav-link:hover, 
+.menu_dark .navbar-nav .nav-link:hover, .search-button:hover, .widget_links li a::before,
+.tax-service-category ul li a:hover, .tax-service-category ul li.active a,
+.blockquote::before, .custome-checkbox .form-check-label::before, 
+.custome-checkbox input[type="checkbox"]:checked + .form-check-label::before,
+.custome-radio input[type="radio"]:checked + .form-check-label::before,
+.cat_list li a:hover, .sidebar .widget_links li a:hover,
+.deal_content .product-title a:hover,
+.product-action-vertical .btn-product-icon:hover,
+.btn-product-icon:hover, .product-action .btn-product:hover {
+    background-color: #D4AF37 !important;
+    color: #000000 !important;
+}
+
+/* Text colors */
+.heading_tab_header .nav-link.active {
+    color: #D4AF37 !important;
+}
+
+/* Border colors */
+.blockquote, .widget_links li a::before {
+    border-color: #D4AF37 !important;
+}
+
+/* Product labels */
+.product_label span.pr_flash {
+    background-color: #D4AF37;
+    color: #000000;
+}
+
+/* Carousel controls */
+.light_arrow .carousel-control-next, .light_arrow .carousel-control-prev {
+    background-color: #D4AF37;
+    color: #000000;
+}
+
+/* Minimal animations */
+.hover_effect1:hover .hover_effect1_img {
+    transition: all 0.4s ease-in-out;
+}
+
+/* Price filter range */
+.ui-slider .ui-slider-range {
+    background-color: #D4AF37;
+}
+
+.top-header, header .side_navbar_toggler span {
+    background-color: #000000;
+}
+
+.btn-dark {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
+
+.footer_top .widget_newsletter button {
+    background-color: #D4AF37;
+    color: #000000;
+}
+
+.ripple, .ripple::before, .ripple::after {
+    background-color: #D4AF37;
+    color: #000000;
+}
+
+/* Footer enhancements */
+.gold-icon {
+    color: #D4AF37 !important;
+}
+
+.premium-text {
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.newsletter-notice {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+.outline-input-group {
+    display: flex;
+    position: relative;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.outline-input-group .form-control {
+    border: none;
+    background: transparent;
+    height: 45px;
+}
+
+.outline-input-group .btn-send {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 45px;
+    width: 45px;
+    background: #D4AF37;
+    color: #000;
+} 
